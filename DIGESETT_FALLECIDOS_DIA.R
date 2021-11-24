@@ -1,4 +1,6 @@
 install.packages("PASWR")
+install.packages('tidyverse')
+install.packages('dplyr')
 
 library(RMySQL)
 
@@ -20,12 +22,16 @@ fallecimientos_dia <- data.frame(lapply(fallecimientos_dia, function(x) {gsub("ﾃ
 colnames(fallecimientos_dia)[1] <- "dia_semana"
 colnames(fallecimientos_dia)[3] <- "Aﾃ前"
 
+
 fallecimientos_dia$FALLECIDOS <- as.numeric(fallecimientos_dia$FALLECIDOS)
 
 class(fallecimientos_dia$FALLECIDOS)
 
+fallecimientos_dia$dia_semana <- factor(fallecimientos_dia$dia_semana)
 
-fallecimientos_dia$Aﾃ前 <- as.numeric(fallecimientos_dia$Aﾃ前)
+class(fallecimientos_dia$dia_semana)
+
+fallecimientos_dia$Aﾃ前 <- factor(fallecimientos_dia$Aﾃ前)
 
 class(fallecimientos_dia$Aﾃ前)
 
@@ -43,6 +49,20 @@ EDA(fallecidos_dia)
 ###########################Transform########################
 str(fallecimientos_dia)
 
+unique(fallecimientos_dia['dia_semana'])
+
+fallecimientos_dia <- data.frame(lapply(fallecimientos_dia, function(x) {gsub("Jueves ", "Jueves", x)}))
+
 fallecimientos_dia$dia_semana <- factor(fallecimientos_dia$dia_semana)
+
+##########################Graphics########################
+library(ggplot2)
+library(tidyverse)
+
+f_year <- fallecimientos_dia %>% filter(Aﾃ前 == '2021')
+
+ggplot(f_year, aes(x=dia_semana , y=FALLECIDOS)) +
+  geom_bar(stat = 'identity')
+
 
 

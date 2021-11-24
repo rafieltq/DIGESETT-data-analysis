@@ -17,7 +17,7 @@ fallecimientos_hora <- data.frame(lapply(fallecimientos_hora, function(x) {gsub(
 colnames(fallecimientos_hora)[1] <- "INTERVALOS_HORAS"
 colnames(fallecimientos_hora)[3] <- "AÑO"
 
-fallecimientos_hora$AÑO <- as.numeric(fallecimientos_hora$AÑO)
+fallecimientos_hora$AÑO <- factor(fallecimientos_hora$AÑO)
 fallecimientos_hora$FALLECIDOS <- as.numeric(fallecimientos_hora$FALLECIDOS)
 
 class(fallecimientos_hora$AÑO)
@@ -40,3 +40,6 @@ str(fallecimientos_hora)
 
 
 fallecimientos_hora$INTERVALOS_HORAS <- factor(fallecimientos_hora$INTERVALOS_HORAS)
+
+############Graphics#############
+
