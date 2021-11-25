@@ -3,7 +3,7 @@ library(hrbrthemes)
 
 ##por dia
 
-ggplot(fallecimientos_dia, aes(x=AÑO, y=FALLECIDOS)) + 
+ggplot(fallecimientos_dia, aes(x=AÃ‘O, y=FALLECIDOS)) + 
   geom_bar(stat = "identity")
 
 ggplot(fallecimientos_dia, aes(x=dia_semana, y=FALLECIDOS)) + 
