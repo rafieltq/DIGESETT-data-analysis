@@ -5,7 +5,7 @@ install.packages('dplyr')
 library(RMySQL)
 
 mydb = dbConnect(MySQL(), user='rafiel',password='RTQ2203003#@',
-                 dbname="digesett",
+                 dbname="digesett_clean",
                  host='localhost',
                  port=3306)
 
@@ -23,7 +23,7 @@ colnames(fallecimientos_dia)[1] <- "dia_semana"
 colnames(fallecimientos_dia)[3] <- "AÑO"
 
 
-fallecimientos_dia$FALLECIDOS <- as.numeric(fallecimientos_dia$FALLECIDOS)
+fallecimientos_dia$FALLECIDOS <- as.numeric(fallecimientos_dia$Fallecimientos_totales)
 
 class(fallecimientos_dia$FALLECIDOS)
 
@@ -57,12 +57,9 @@ fallecimientos_dia$dia_semana <- factor(fallecimientos_dia$dia_semana)
 
 ##########################Graphics########################
 library(ggplot2)
-library(tidyverse)
+library(dplyr)
 
-f_year <- fallecimientos_dia %>% filter(AÑO == '2021')
-
-ggplot(f_year, aes(x=dia_semana , y=FALLECIDOS)) +
-  geom_bar(stat = 'identity')
-
-
-
+ggplot(fallecimientos_dia, aes(x=Dia , y=Fallecimientos_totales)) +
+  geom_bar(stat = 'identity',fill="lightblue") +
+  ggtitle ("Total de fallecimientos por dia de la semana")
+  

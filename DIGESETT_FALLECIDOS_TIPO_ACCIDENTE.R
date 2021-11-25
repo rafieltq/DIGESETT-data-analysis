@@ -1,7 +1,7 @@
 library(RMySQL)
 
 mydb = dbConnect(MySQL(), user='rafiel',password='RTQ2203003#@',
-                 dbname="digesett",
+                 dbname="digesett_clean",
                  host='localhost',
                  port=3306)
 
@@ -17,22 +17,24 @@ fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub(
 fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("Ã", "í", x)}))
 fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("í³", "ó", x)}))
 colnames(fallecimientos_tipo)[1] <- "TIPO_ACCIDENTE"
-colnames(fallecimientos_tipo)[3] <- "AÑO"
 
 str(fallecimientos_tipo)
 
-fallecimientos_tipo$AÑO <- factor(fallecimientos_tipo$AÑO)
-fallecimientos_tipo$FALLECIDOS <- as.numeric(fallecimientos_tipo$FALLECIDOS)
-
-class(fallecimientos_tipo$AÑO)
-class(fallecimientos_tipo$FALLECIDOS)
+fallecimientos_tipo$FALLECIMIENTOS_TOTALES <- as.numeric(fallecimientos_tipo$FALLECIMIENTOS_TOTALES)
+fallecimientos_tipo$TIPO_ACCIDENTE <- factor(fallecimientos_tipo$TIPO_ACCIDENTE)
+fallecimientos_tipo$X2016 <- as.numeric(fallecimientos_tipo$X2016)
+fallecimientos_tipo$X2017 <- as.numeric(fallecimientos_tipo$X2017)
+fallecimientos_tipo$X2018 <- as.numeric(fallecimientos_tipo$X2018)
+fallecimientos_tipo$X2019 <- as.numeric(fallecimientos_tipo$X2019)
+fallecimientos_tipo$X2020 <- as.numeric(fallecimientos_tipo$X2020)
+fallecimientos_tipo$X2021 <- as.numeric(fallecimientos_tipo$X2021)
 
 dbDisconnect(mydb)
 
 #################Explore########################
 library(PASWR)
 
-tipo_accidente <- fallecimientos_tipo$FALLECIDOS
+tipo_accidente <- fallecimientos_tipo$FALLECIMIENTOS_TOTALES
 
 summary(fallecimientos_tipo)
 
@@ -43,13 +45,7 @@ library(dplyr)
 
 str(fallecimientos_tipo)
 
-.unique(fallecimientos_tipo$TIPO_ACCIDENTE)
-fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("Aplastamiento", "Aplastamiento", x)}))
-fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("os", "o", x)}))
-fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("Atropellamiento", "Atropello", x)}))
-fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("Colisión", "Colisiones", x)}))
-fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("pp", "p", x)}))
-fallecimientos_tipo <- data.frame(lapply(fallecimientos_tipo, function(x) {gsub("Volcaduras", "Volcadura", x)}))
+unique(fallecimientos_tipo$TIPO_ACCIDENTE)
 
 
 fallecimientos_tipo$TIPO_ACCIDENTE <- factor(fallecimientos_tipo$TIPO_ACCIDENTE)
@@ -57,7 +53,8 @@ fallecimientos_tipo$TIPO_ACCIDENTE <- factor(fallecimientos_tipo$TIPO_ACCIDENTE)
 ##############Graphics#####################
 library(ggplot2)
 
-f_type_year <- fallecimientos_tipo %>% filter(AÑO == '2021')
+ggplot(fallecimientos_tipo, aes(x=TIPO_ACCIDENTE , y=X2016)) +
+  geom_bar(stat = 'identity', fill=rgb(1,0.5,1,0.9))
 
-ggplot(f_type_year, aes(x=TIPO_ACCIDENTE , y=FALLECIDOS)) +
-  geom_bar(stat = 'identity')
+ggplot(fallecimientos_tipo, aes(x=TIPO_ACCIDENTE , y=X2020)) +
+  geom_bar(stat = 'identity', fill=rgb(1,0.5,1,0.9))
